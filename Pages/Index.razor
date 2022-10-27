@@ -1,0 +1,27 @@
+﻿@page "/"
+
+@using PinballWizard.Interfaces
+@inject ICoordinatesService coordinatesService
+
+<PageTitle>Pinball Wizard</PageTitle>
+
+<h1>Pinball Wizard</h1>
+<MatButton @onclick="GetCurrentCoordinates">Near me</MatButton>
+<div>
+Latitude: @latitude 
+Longitude: @longitude
+</div>
+
+@code {
+    private string latitude;
+    private string longitude;
+
+    private async Task GetCurrentCoordinates()
+    {
+        var coordinates = await coordinatesService.GetCurrentCoordinates();
+
+        latitude = coordinates.lat;
+        longitude = coordinates.lon;
+    }
+
+}
