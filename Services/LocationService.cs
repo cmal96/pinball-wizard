@@ -5,9 +5,16 @@ namespace PinballWizard.Services
 {
     public class LocationService : ILocationService
     {
-        public IEnumerable<Location> GetLocations(string region)
+        private readonly IPinballApiClient pinballApiClient;
+
+        public LocationService(IPinballApiClientFactory pinballApiClientFactory)
         {
-            throw new NotImplementedException();
+            pinballApiClient = pinballApiClientFactory.Create();
+        }
+
+        public async Task<List<Location>> GetLocations(string region)
+        {
+            return await pinballApiClient.GetLocationsByRegion(region, default);
         }
     }
 }

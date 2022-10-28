@@ -1,5 +1,6 @@
 using Darnton.Blazor.DeviceInterop.Geolocation;
 using MatBlazor;
+using PinballWizard.Factories;
 using PinballWizard.Interfaces;
 using PinballWizard.Services;
 
@@ -11,6 +12,7 @@ builder.Services.AddServerSideBlazor();
 builder.Services.AddMatBlazor();
 builder.Services.AddSingleton<IRegionService, RegionService>();
 builder.Services.AddSingleton<ILocationService, LocationService>();
+builder.Services.AddSingleton<IPinballApiClientFactory, PinballApiClientFactory>();
 builder.Services.AddTransient<ICoordinatesService, CoordinatesService>();
 builder.Services.AddScoped<IGeolocationService, GeolocationService>();
 

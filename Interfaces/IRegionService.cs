@@ -4,6 +4,6 @@ namespace PinballWizard.Interfaces
 {
     public interface IRegionService
     {
-        Region GetRegion(string longitude, string latitude);
+        Task<Region> GetRegion(string latitude, string longitude);
     }
 }

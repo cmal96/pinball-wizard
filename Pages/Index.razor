@@ -1,20 +1,46 @@
 ﻿@page "/"
 
 @using PinballWizard.Interfaces
+@using PinballWizard.Models
 @inject ICoordinatesService coordinatesService
+@inject ILocationService locationService
+@inject IRegionService regionService
 
 <PageTitle>Pinball Wizard</PageTitle>
 
 <h1>Pinball Wizard</h1>
-<MatButton @onclick="GetCurrentCoordinates">Near me</MatButton>
+
 <div>
-Latitude: @latitude 
-Longitude: @longitude
+    <MatTextField @bind-Value="@latitude" Label="Latitude"></MatTextField>
+    <MatTextField @bind-Value="@longitude" Label="Longitude"></MatTextField>
+    <MatButton Unelevated="true" TrailingIcon="search" @onclick="Search">Search</MatButton>
+    <MatButton Outlined="true" @onclick="GetCurrentCoordinates">Near me</MatButton>
 </div>
+
+@if (isLoading)
+{
+    <MatProgressCircle Indeterminate="true" Size="MatProgressCircleSize.Large" />
+}
+else
+{
+    <MatList>
+        @foreach (var location in @locations)
+        {
+            <MatListItem>
+                <div>
+                    @location.name - @location.street, @location.city, @location.state @location.zip
+                </div>
+            </MatListItem>
+
+        }
+    </MatList>
+}
 
 @code {
     private string latitude;
     private string longitude;
+    private bool isLoading = false;
+    private List<Location> locations = new List<Location>();
 
     private async Task GetCurrentCoordinates()
     {
@@ -24,4 +50,19 @@ Longitude: @longitude
         longitude = coordinates.lon;
     }
 
+    private async Task Search()
+    {
+        isLoading = true;
+        locations = new List<Location>();
+        var region = await regionService.GetRegion(latitude, longitude);
+
+        if (region == null)
+        {
+            isLoading = false;
+            throw new Exception("Could not find locations for the given coordinates.");
+        }
+
+        locations = await locationService.GetLocations(region.name);
+        isLoading = false;
+    }
 }

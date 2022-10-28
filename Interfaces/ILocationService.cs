@@ -4,6 +4,6 @@ namespace PinballWizard.Interfaces
 {
     public interface ILocationService
     {
-        IEnumerable<Location> GetLocations(string region);
+        Task<List<Location>> GetLocations(string region);
     }
 }

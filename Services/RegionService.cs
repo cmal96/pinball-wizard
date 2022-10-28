@@ -5,9 +5,16 @@ namespace PinballWizard.Services
 {
     public class RegionService : IRegionService
     {
-        public Region GetRegion(string longitude, string latitude)
+        private readonly IPinballApiClient pinballApiClient;
+
+        public RegionService(IPinballApiClientFactory pinballApiClientFactory)
         {
-            throw new NotImplementedException();
+            this.pinballApiClient = pinballApiClientFactory.Create();
+        }
+
+        public async Task<Region> GetRegion(string latitude, string longitude)
+        {
+            return await pinballApiClient.GetRegionByCoordinates(latitude, longitude, default);
         }
     }
 }

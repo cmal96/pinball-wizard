@@ -16,17 +16,10 @@ namespace PinballWizard.Services
         public async Task<Coordinates> GetCurrentCoordinates()
         {
             var coordinates = new Coordinates();
-            try
-            {
-                var result = await geolocationService.GetCurrentPosition();
+            var result = await geolocationService.GetCurrentPosition();
 
-                coordinates.lat = result.Position.Coords.Latitude.ToString();
-                coordinates.lon = result.Position.Coords.Longitude.ToString();
-            }
-            catch (Exception)
-            {
-                throw;
-            }
+            coordinates.lat = result.Position.Coords.Latitude.ToString();
+            coordinates.lon = result.Position.Coords.Longitude.ToString();
 
             return coordinates;
         }
